@@ -1,4 +1,4 @@
-package com.example.datealarm.ui.theme
+package com.example.datealarm.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
