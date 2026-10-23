@@ -10,5 +10,6 @@ data class Subscription (
     val cycle: PaymentCycle,
     val nextPaymentDate: LocalDate,
     val reminderDaysBefore: Int = 1,
-    val reminderTime: LocalTime = LocalTime.of(9,0)
+    val reminderTime: LocalTime = LocalTime.of(9,0),
+    val reminderType: Set<ReminderType> = setOf(ReminderType.NOTIFICATION)
 )

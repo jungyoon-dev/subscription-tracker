@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,9 +28,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.datealarm.domain.model.PaymentCycle
+import com.example.datealarm.domain.model.ReminderType
+import com.example.datealarm.domain.model.Subscription
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -36,7 +41,7 @@ import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditSubscriptionScreen() {
+fun AddEditSubscriptionScreen(onSaveClick: (Subscription) -> Unit) {
     var name by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
     var cycle by remember { mutableStateOf(PaymentCycle.MONTHLY) }
@@ -45,6 +50,7 @@ fun AddEditSubscriptionScreen() {
     var showDatePicker by remember { mutableStateOf(false) }
     var reminderTime by remember { mutableStateOf(LocalTime.of(9,0)) }
     var showTimePicker by remember { mutableStateOf(false) }
+    var reminderType by remember { mutableStateOf(setOf(ReminderType.NOTIFICATION)) }
 
     Column(modifier = Modifier.padding(16.dp)) {
         OutlinedTextField(
@@ -93,6 +99,27 @@ fun AddEditSubscriptionScreen() {
                 onClick = {reminderDaysBefore = 7}
             )
             Text("일주일 전")
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = ReminderType.NOTIFICATION in reminderType,
+                onCheckedChange = { checked ->
+                    reminderType = if (checked) reminderType + ReminderType.NOTIFICATION
+                    else reminderType - ReminderType.NOTIFICATION
+                }
+            )
+            Text("알림(노티)")
+
+            Checkbox(
+                checked = ReminderType.ALARM in reminderType,
+                onCheckedChange = {checked ->
+                    reminderType = if (checked) reminderType + ReminderType.ALARM
+                    else reminderType - ReminderType.ALARM
+                }
+            )
+
+            Text("알람")
         }
 
         OutlinedButton(onClick = { showDatePicker = true}) {
@@ -162,6 +189,23 @@ fun AddEditSubscriptionScreen() {
                     }
                 }
             }
+        }
+
+        Button(onClick = {
+            onSaveClick(
+                Subscription(
+                    id = 0L,
+                    name = name,
+                    price = price.toIntOrNull() ?: 0,
+                    cycle = cycle,
+                    nextPaymentDate = nextPaymentDate,
+                    reminderDaysBefore = reminderDaysBefore,
+                    reminderTime = reminderTime,
+                    reminderType = reminderType
+                )
+            )
+        }) {
+            Text("저장")
         }
     }
 
