@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.example.datealarm.domain.model.Subscription
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import com.example.datealarm.domain.model.upcomingPaymentDate
 
 
 @Composable
@@ -55,7 +56,7 @@ fun SubscriptionListItem(subscription: Subscription, modifier: Modifier = Modifi
         Column(modifier = Modifier.padding(16.dp)) {
             Text(subscription.name, style = MaterialTheme.typography.titleMedium)
             Text("${subscription.price}원 , ${subscription.cycle}")
-            Text("다음 결제일: ${subscription.nextPaymentDate}")
+            Text("다음 결제일: ${subscription.upcomingPaymentDate()}")
         }
 
     }
