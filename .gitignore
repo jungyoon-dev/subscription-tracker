@@ -13,3 +13,22 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Build outputs
+build/
+*.apk
+*.aab
+output-metadata.json
+
+# Log files
+*.log
+
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+
+# Android Profiling
+*.hprof
